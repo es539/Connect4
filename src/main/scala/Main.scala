@@ -6,13 +6,13 @@ import scalafxml.core.{FXMLView, NoDependencyResolver}
 
 import java.io.IOException
 
-object Games extends JFXApp3 {
+object Main extends JFXApp3 {
   /**
    * Starts the App.
    */
   override def start(): Unit = {
     System.setProperty("java.awt.headless", "false")
-    val fxml = getClass.getResource("Resources/mainView.fxml")
+    val fxml = getClass.getResource("resources/mainView.fxml")
     if (fxml == null) {
       throw new IOException("Cannot load resource: AdoptionForm.fxml")
     }
@@ -24,6 +24,6 @@ object Games extends JFXApp3 {
       height = 800
       scene = new Scene(root)
     }
-    stage.getIcons.add(new Image("Resources/icon.png"))
+    stage.getIcons.add(new Image("resources/icon.png"))
   }
 }

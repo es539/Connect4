@@ -1,7 +1,5 @@
 package connect4
 
-import base.{Piece, State}
-
 class Connect4ControllerTest extends org.scalatest.FunSuite {
   var gameBoard: Array[Array[Piece]] = _
   var testBoard: Array[Array[Piece]] = _
