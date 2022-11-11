@@ -19,5 +19,5 @@ trait IBoard {
 
   def endGame: Boolean
 
-  def getBoardScore: Int
+  def getBoardScore: Array[Int]
 }

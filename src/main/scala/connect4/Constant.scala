@@ -2,7 +2,7 @@ package connect4
 
 import javafx.scene.paint.Color
 
-object Constant  {
+object Constant {
   final val RED: Char = 'R' // CPU
   final val YELLOW: Char = 'Y' // Human
   final val EMPTY: Char = 'E'

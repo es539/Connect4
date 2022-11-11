@@ -6,8 +6,14 @@ import scala.util.control.Breaks.{break, breakable}
 
 class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
 
-  private var bestCol: Int = _
   private final val INF: Int = 1000
+  private var bestCol: Int = _
+
+  def cpuMove(board: IBoard): Int = {
+    val root: TreeNode = new TreeNode()
+    maximizer(board, 0, -INF, INF)
+    bestCol
+  }
 
   private def minimizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int): Int = {
     if (depth == maxDepth || board.endGame) return 0
@@ -49,11 +55,5 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
       }
     }
     bestScore
-  }
-
-  def cpuMove(board: IBoard): Int = {
-    val root: TreeNode = new TreeNode() //////
-    maximizer(board, 0, -INF, INF)
-    bestCol
   }
 }

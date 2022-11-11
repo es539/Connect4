@@ -22,8 +22,6 @@ class MainController(var gamePane: StackPane, val menuPane: AnchorPane,
   def Connect4Start(): Unit = {
     init()
     val game: Game = new Game(gamePane, depth, pruning)
-    // showTreeButton.setOnMouseClicked(_ => gameEngine.showTree())
-    // gameEngine.startGame(gamePane)
   }
 
   /**
@@ -34,6 +32,13 @@ class MainController(var gamePane: StackPane, val menuPane: AnchorPane,
     depth = if (input.getText == "") 6 else input.getText.toInt
     val pruningType = if (miniMaxType.getValue == null) "Alpha-Beta" else miniMaxType.getValue
     pruning = if (pruningType == "Alpha-Beta") true else false
+  }
+
+  /**
+   * Returns to main menu when the button is pressed.
+   */
+  def returnMenu(): Unit = {
+    gameMode(false)
   }
 
   /**
@@ -49,12 +54,5 @@ class MainController(var gamePane: StackPane, val menuPane: AnchorPane,
     returnButton.setVisible(boolean)
     returnButtonImg.setVisible(boolean)
     gamePane.setVisible(boolean)
-  }
-
-  /**
-   * Returns to main menu when the button is pressed.
-   */
-  def returnMenu(): Unit = {
-    gameMode(false)
   }
 }

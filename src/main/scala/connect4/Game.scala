@@ -1,20 +1,21 @@
 package connect4
 
 import javafx.geometry.{HPos, Pos, VPos}
+import javafx.scene.control.Label
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.{GridPane, StackPane}
 import javafx.scene.paint.Color
 import javafx.scene.shape.{Circle, Rectangle}
+import javafx.scene.text.{Font, FontWeight}
 
 class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
 
   var board: IBoard = _
   var ai: MinimaxAI = _
   var gridPane: GridPane = _
+  var gameEnd: Boolean = false
 
-  {
-    drawInit()
-  }
+  drawInit()
 
   def drawInit(): Unit = {
     board = new Board(6, 7)
@@ -40,9 +41,9 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     pane.getChildren.add(gridPane)
   }
 
-  private def doAction(e: MouseEvent): Unit ={
+  private def doAction(e: MouseEvent): Unit = {
     var col: Int = (e.getX.toInt - 260) / Constant.SQUARE
-    if (!board.endGame && board.inBound(col)) {
+    if (!board.endGame && board.isValidMove(col)) {
       drawCircle(board.nextValidRow(col), col, Constant.YELLOW_COLOR)
       board.addPiece(col, Constant.YELLOW)
       println("Board After Human Move: \n" + board)
@@ -54,6 +55,11 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
         println("Board After AI Move: \n" + board)
       }
     }
+
+    if (board.endGame && !gameEnd) {
+      gameEnd = true
+      drawEnd(board.getBoardScore)
+    }
   }
 
   private def drawCircle(i: Int, j: Int, color: Color): Unit = {
@@ -62,6 +68,17 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     gridPane.add(circle, j, i, 1, 1)
     GridPane.setHalignment(circle, HPos.CENTER)
     GridPane.setValignment(circle, VPos.CENTER)
+  }
+
+  def drawEnd(score: Array[Int]): Unit = {
+    val text = new Label()
+    text.setFont(Font.font("Roboto", FontWeight.BOLD, 40))
+    text.setTextFill(Color.rgb(200, 200, 200, 1))
+
+    text.setText(score(0).toString + " - " + score(1).toString)
+
+    pane.setAlignment(Pos.TOP_CENTER)
+    pane.getChildren.add(text)
   }
 
 }
