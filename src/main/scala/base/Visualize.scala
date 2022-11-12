@@ -11,6 +11,7 @@ import java.awt.Desktop
 import java.io.{File, IOException}
 import java.util
 import scala.collection.mutable
+import scala.util.control.Breaks.{break, breakable}
 
 object Visualize {
   @throws[IOException]
@@ -50,47 +51,55 @@ object Visualize {
     var c1: Color = null
     var c2: Color = null
 
-    while (queue.nonEmpty) {
-      val current: TreeNode = queue.dequeue()
-      if (current.depth % 2 == 0) {
-        c1 = Color.WHITE
-        c2 = Color.RED
-      }
-      else {
-        c1 = Color.RED
-        c2 = Color.WHITE
-      }
+    breakable{
+      while (queue.nonEmpty) {
+        val current: TreeNode = queue.dequeue()
+        if (current.depth == 2)
+          break()
 
-      if (nodes.get(current.hash) == null)
-        nodes.put(current.hash, mutNode(current.score + ", " + current.depth + ", " + current.id))
-      val s = nodes.get(current.hash)
+        if (current.depth % 2 == 0) {
+          c1 = Color.WHITE
+          c2 = Color.RED
+        }
+        else {
+          c1 = Color.RED
+          c2 = Color.WHITE
+        }
 
-      if (current.depth % 2 == 0)
-        s.add(Shape.TRIANGLE)
-      else
-        s.add(Shape.INV_TRIANGLE)
-
-      for (child <- current.children) {
-        var e: MutableNode = null
-        if (nodes.get(child.hash) == null)
-          nodes.put(child.hash, mutNode(child.score + ", " + child.depth + ", " + child.id))
-        e = nodes.get(child.hash)
+        if (nodes.get(current.hash) == null)
+          nodes.put(current.hash, mutNode(current.score + ", " + current.depth +
+            ", " + current.column + ", " + current.row + ", " + current.parent))
+        val s = nodes.get(current.hash)
 
         if (current.depth % 2 == 0)
-          e.add(Shape.TRIANGLE)
+          s.add(Shape.TRIANGLE)
         else
-          e.add(Shape.INV_TRIANGLE)
+          s.add(Shape.INV_TRIANGLE)
 
-        queue.enqueue(child)
-        g.add(
-          s.add(c1)
-            .addLink(
-              to(
-                e.add(c2)
-              ).add(Color.WHITE)
-            )
-        )
+        for (child <- current.children) {
+          var e: MutableNode = null
+          if (nodes.get(child.hash) == null)
+            nodes.put(child.hash, mutNode(child.score + ", " + child.depth + ", " +
+              child.column + ", " + child.row + ", " + child.parent))
+          e = nodes.get(child.hash)
+
+          if (current.depth % 2 == 0)
+            e.add(Shape.TRIANGLE)
+          else
+            e.add(Shape.INV_TRIANGLE)
+
+          queue.enqueue(child)
+          g.add(
+            s.add(c1)
+              .addLink(
+                to(
+                  e.add(c2)
+                ).add(Color.WHITE)
+              )
+          )
+        }
       }
     }
+
   }
 }

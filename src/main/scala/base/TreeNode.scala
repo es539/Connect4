@@ -1,17 +1,21 @@
 package base
 
 class TreeNode {
-  var score = 0
-  var depth = 0
-  var id = 0
+  var score: Int = 0
+  var depth: Int = 0
+  var column: Int = -1
+  var row: Int = -1
+  var parent: Int = -1
   var children: Array[TreeNode] = Array()
 
-  def this(score: Int, depth: Int, id: Int) {
+  def this(score: Int, depth: Int, c: Int, r: Int, p: Int) {
     this()
     this.score = score
     this.depth = depth
-    this.id = id
+    this.column = c
+    this.row = r
+    this.parent = p
   }
 
-  def hash: String = score + " " + depth + " " + id
+  def hash: String = score + " " + depth + " " + column + " " + row + " " + parent
 }

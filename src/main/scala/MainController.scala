@@ -22,6 +22,7 @@ class MainController(var gamePane: StackPane, val menuPane: AnchorPane,
   def Connect4Start(): Unit = {
     init()
     val game: Game = new Game(gamePane, depth, pruning)
+    showTreeButton.setOnMouseClicked(_ => game.drawTree())
   }
 
   /**

@@ -1,5 +1,6 @@
 package connect4
 
+import base.{TreeNode, Visualize}
 import javafx.geometry.{HPos, Pos, VPos}
 import javafx.scene.control.Label
 import javafx.scene.input.MouseEvent
@@ -14,6 +15,7 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
   var ai: MinimaxAI = _
   var gridPane: GridPane = _
   var gameEnd: Boolean = false
+  var tree: TreeNode = _
 
   drawInit()
 
@@ -48,7 +50,11 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
       board.addPiece(col, Constant.YELLOW)
       println("Board After Human Move: \n" + board)
       if (!board.endGame) {
-        col = ai.cpuMove(board)
+        val time = System.currentTimeMillis()
+        val move = ai.cpuMove(board)
+        col = move.column
+        tree = move.tree
+        println("Time: " + (System.currentTimeMillis() - time) + "ms")
         println("AI col: " + col)
         drawCircle(board.nextValidRow(col), col, Constant.RED_COLOR)
         board.addPiece(col, Constant.RED)
@@ -79,6 +85,10 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
 
     pane.setAlignment(Pos.TOP_CENTER)
     pane.getChildren.add(text)
+  }
+
+  def drawTree(): Unit = {
+    Visualize.visualize(tree)
   }
 
 }
