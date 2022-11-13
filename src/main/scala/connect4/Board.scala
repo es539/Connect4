@@ -23,10 +23,6 @@ class Board(rows: Int, cols: Int) extends IBoard {
     inBound(c) && isValidRow(c)
   }
 
-  override def inBound(c: Int): Boolean = {
-    c >= 0 && c < cols
-  }
-
   override def isValidRow(c: Int): Boolean = {
     nextValidRow(c) != -1
   }
@@ -40,6 +36,18 @@ class Board(rows: Int, cols: Int) extends IBoard {
         r + 1
       })(c) = Constant.EMPTY
     }
+  }
+
+  override def inBound(c: Int): Boolean = {
+    c >= 0 && c < cols
+  }
+
+  override def nextValidRow(c: Int): Int = {
+    for (r <- rows - 1 to 0 by -1) {
+      if (board(r)(c) == Constant.EMPTY)
+        return r
+    }
+    -1
   }
 
   override def getHeuristicScore(c: Int, player: Char): Int = {
@@ -60,14 +68,6 @@ class Board(rows: Int, cols: Int) extends IBoard {
     if (player == Constant.YELLOW) {
       -1 * score
     } else score
-  }
-
-  override def nextValidRow(c: Int): Int = {
-    for (r <- rows - 1 to 0 by -1) {
-      if (board(r)(c) == Constant.EMPTY)
-        return r
-    }
-    -1
   }
 
   private def windowScore(r: Int, c: Int, dx: Int, dy: Int, player: Char): Int = {
@@ -144,7 +144,8 @@ class Board(rows: Int, cols: Int) extends IBoard {
     score
   }
 
-  def calcGroup(startRow: Int, startCol: Int, endRow: Int, endCol: Int, rowPolicy: Array[Int], colPolicy: Array[Int], turn: Char, usedTiles: Array[Array[Boolean]]): Int = {
+  def calcGroup(startRow: Int, startCol: Int, endRow: Int, endCol: Int, rowPolicy: Array[Int], colPolicy: Array[Int],
+                turn: Char, usedTiles: Array[Array[Boolean]]): Int = {
     var score: Int = 0
     for (row <- startRow until endRow)
       for (col <- startCol until endCol) {
@@ -152,8 +153,8 @@ class Board(rows: Int, cols: Int) extends IBoard {
           var equal: Int = 0
           var used: Int = 0
           for (i <- 0 until 4) {
-            val newRow : Int = row + rowPolicy(i)
-            val newCol :Int = col + colPolicy(i)
+            val newRow: Int = row + rowPolicy(i)
+            val newCol: Int = col + colPolicy(i)
             equal += (if (board(newRow)(newCol) == turn) 1 else 0)
             used += (if (usedTiles(newRow)(newCol)) 1 else 0)
           }

@@ -7,8 +7,8 @@ import scala.util.control.Breaks.{break, breakable}
 class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
 
   private final val INF: Int = 1000
-  private var bestCol: Int = _
   var tree: TreeNode = _
+  private var bestCol: Int = _
 
   def cpuMove(board: IBoard): AIMove = {
     tree = new TreeNode()
@@ -17,7 +17,12 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
   }
 
   private def minimizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int, node: TreeNode): Int = {
-    if (depth == maxDepth || board.endGame) return 0
+    if (board.endGame) {
+      val score = board.getBoardScore
+      return score(0) * 1000 + score(1) * -1000
+    }
+    if (depth == maxDepth)
+      return 0
 
     var bestScore: Int = INF
     var nextNode: TreeNode = null
@@ -45,11 +50,18 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         }
       }
     }
+    println(node + "------min")
     bestScore
   }
 
   private def maximizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int, node: TreeNode): Int = {
-    if (depth == maxDepth || board.endGame) return 0
+    if (board.endGame) {
+      val score = board.getBoardScore
+      return score(0) * 1000 + score(1) * -1000
+    }
+    if (depth == maxDepth)
+      return 0
+
     var bestScore: Int = -INF
     var nextNode: TreeNode = null
     breakable {
@@ -79,6 +91,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         }
       }
     }
+    println(node + "------max")
     bestScore
   }
 }

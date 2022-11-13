@@ -1,7 +1,7 @@
 package base
 
 class TreeNode {
-  var score: Int = 0
+  var score: Int = Int.MinValue
   var depth: Int = 0
   var column: Int = -1
   var row: Int = -1
@@ -18,4 +18,8 @@ class TreeNode {
   }
 
   def hash: String = score + " " + depth + " " + column + " " + row + " " + parent
+
+  override def toString: String = {
+    score + " " + depth + " " + column + " " + row + " " + parent
+  }
 }

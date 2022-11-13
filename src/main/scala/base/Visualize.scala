@@ -11,7 +11,7 @@ import java.awt.Desktop
 import java.io.{File, IOException}
 import java.util
 import scala.collection.mutable
-import scala.util.control.Breaks.{break, breakable}
+import scala.util.control.Breaks.breakable
 
 object Visualize {
   @throws[IOException]
@@ -51,11 +51,9 @@ object Visualize {
     var c1: Color = null
     var c2: Color = null
 
-    breakable{
+    breakable {
       while (queue.nonEmpty) {
         val current: TreeNode = queue.dequeue()
-        if (current.depth == 2)
-          break()
 
         if (current.depth % 2 == 0) {
           c1 = Color.WHITE
@@ -68,7 +66,7 @@ object Visualize {
 
         if (nodes.get(current.hash) == null)
           nodes.put(current.hash, mutNode(current.score + ", " + current.depth +
-            ", " + current.column + ", " + current.row + ", " + current.parent))
+            ", (" + current.column + ", " + current.row + "), " + current.parent))
         val s = nodes.get(current.hash)
 
         if (current.depth % 2 == 0)
@@ -76,11 +74,13 @@ object Visualize {
         else
           s.add(Shape.INV_TRIANGLE)
 
-        for (child <- current.children) {
+        val children = current.children.filter(treeNode => treeNode.score != Int.MinValue)
+
+        for (child <- children) {
           var e: MutableNode = null
           if (nodes.get(child.hash) == null)
-            nodes.put(child.hash, mutNode(child.score + ", " + child.depth + ", " +
-              child.column + ", " + child.row + ", " + child.parent))
+            nodes.put(child.hash, mutNode(child.score + ", " + child.depth + ", (" +
+              child.column + ", " + child.row + "), " + child.parent))
           e = nodes.get(child.hash)
 
           if (current.depth % 2 == 0)
