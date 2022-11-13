@@ -19,7 +19,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
   private def minimizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int, node: TreeNode): Int = {
     if (board.endGame) {
       val score = board.getBoardScore
-      return score(0) * 1000 + score(1) * -1000
+      return score(0) * -1000 + score(1) * 1000
     }
     if (depth == maxDepth)
       return 0
@@ -57,7 +57,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
   private def maximizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int, node: TreeNode): Int = {
     if (board.endGame) {
       val score = board.getBoardScore
-      return score(0) * 1000 + score(1) * -1000
+      return score(0) * -1000 + score(1) * 1000
     }
     if (depth == maxDepth)
       return 0
