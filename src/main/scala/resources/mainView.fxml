@@ -34,6 +34,10 @@
         <JFXComboBox fx:id="miniMaxType" layoutX="603.0" layoutY="362.0" prefHeight="65.0" prefWidth="140.0" promptText="Choose Minimax" stylesheets="@ComboBox.css" unFocusColor="#bc3333" />
     </AnchorPane>
     <AnchorPane prefHeight="79.0" prefWidth="1080.0">
+        <ImageView fx:id="humanImage" fitHeight="54.0" fitWidth="71.0" layoutX="368.0" layoutY="15.0"
+                   pickOnBounds="true" preserveRatio="true" visible="false">
+            <Image url="@human.png"/>
+        </ImageView>
         <ImageView fx:id="returnButtonImg" fitHeight="28.0" fitWidth="51.0" layoutX="31.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <Image url="@back.png" />
         </ImageView>
@@ -50,5 +54,9 @@
                 <Font name="Segoe UI Bold" size="20.0" />
             </font>
         </JFXButton>
+        <ImageView fx:id="aiImage" fitHeight="54.0" fitWidth="71.0" layoutX="660.0" layoutY="15.0" pickOnBounds="true"
+                   preserveRatio="true" visible="false">
+            <Image url="@ai.png"/>
+        </ImageView>
     </AnchorPane>
 </AnchorPane>

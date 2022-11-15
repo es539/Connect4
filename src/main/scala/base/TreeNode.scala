@@ -2,24 +2,28 @@ package base
 
 class TreeNode {
   var score: Int = Int.MinValue
+  var curScore: Int = Int.MinValue
+  var nextScore: Int = Int.MinValue
   var depth: Int = 0
   var column: Int = -1
-  var row: Int = -1
-  var parent: Int = -1
+  var id: String = scala.util.Random.between(1, 10000).toString
   var children: Array[TreeNode] = Array()
 
-  def this(score: Int, depth: Int, c: Int, r: Int, p: Int) {
+  def this(depth: Int, c: Int) {
     this()
-    this.score = score
     this.depth = depth
     this.column = c
-    this.row = r
-    this.parent = p
   }
 
-  def hash: String = score + " " + depth + " " + column + " " + row + " " + parent
+  def setScores(score: Int, curScore:Int, nextScore:Int): Unit = {
+    this.score = score
+    this.curScore = curScore
+    this.nextScore = nextScore
+  }
+
+  def hash: String = score + " " + depth + " " + column + " " + id
 
   override def toString: String = {
-    score + " " + depth + " " + column + " " + row + " " + parent
+    score + " " + depth + " " + column + " " + id
   }
 }

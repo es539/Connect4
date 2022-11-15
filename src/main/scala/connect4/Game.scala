@@ -16,6 +16,7 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
   var gridPane: GridPane = _
   var gameEnd: Boolean = false
   var tree: TreeNode = _
+  var text = new Label()
 
   drawInit()
 
@@ -23,6 +24,10 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     board = new Board(6, 7)
     ai = new MinimaxAI(depth, alphaBeta)
     gridPane = new GridPane()
+
+    text.setTextFill(Color.rgb(200, 200, 200, 1))
+    text.setFont(Font.font("Roboto", FontWeight.BOLD, 40))
+
     drawBoard(6, 7, Color.rgb(0, 0, 139))
   }
 
@@ -41,6 +46,7 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     gridPane.setOnMouseClicked(e => doAction(e))
     pane.setAlignment(Pos.CENTER)
     pane.getChildren.add(gridPane)
+    drawEnd(board.getBoardScore)
   }
 
   private def doAction(e: MouseEvent): Unit = {
@@ -60,10 +66,6 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
         // println("AI col: " + col)
         // println("Board After AI Move: \n" + board)
       }
-    }
-
-    if (board.endGame && !gameEnd) {
-      gameEnd = true
       drawEnd(board.getBoardScore)
     }
   }
@@ -77,9 +79,8 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
   }
 
   def drawEnd(score: Array[Int]): Unit = {
-    val text = new Label()
-    text.setFont(Font.font("Roboto", FontWeight.BOLD, 40))
-    text.setTextFill(Color.rgb(200, 200, 200, 1))
+    pane.setAlignment(Pos.TOP_CENTER)
+    pane.getChildren.remove(text)
 
     text.setText(score(0).toString + "  -  " + score(1).toString)
 

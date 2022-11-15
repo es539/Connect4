@@ -9,7 +9,8 @@ import scalafxml.core.macros.sfxml
 class MainController(var gamePane: StackPane, val menuPane: AnchorPane,
                      val returnButton: Button, val returnButtonImg: ImageView,
                      miniMaxType: ComboBox[String], val input: TextArea,
-                     val showTreeImg: ImageView, val showTreeButton: Button) {
+                     val showTreeImg: ImageView, val showTreeButton: Button,
+                     val aiImage: ImageView, val humanImage: ImageView) {
 
   miniMaxType.getItems.addAll(FXCollections.observableArrayList("Minimax", "Alpha-Beta"))
 
@@ -50,6 +51,8 @@ class MainController(var gamePane: StackPane, val menuPane: AnchorPane,
   def gameMode(boolean: Boolean): Unit = {
     gamePane.getChildren.clear()
     menuPane.setVisible(!boolean)
+    aiImage.setVisible(boolean)
+    humanImage.setVisible(boolean)
     showTreeButton.setVisible(boolean)
     showTreeImg.setVisible(boolean)
     returnButton.setVisible(boolean)

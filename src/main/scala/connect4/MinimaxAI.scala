@@ -28,18 +28,14 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         if (board.isValidRow(c)) {
 
           // Tree representation info
-          nextNode = new TreeNode()
-          nextNode.depth = depth + 1
-          nextNode.column = c + 1
-          nextNode.row = board.nextValidRow(c) + 1
-          nextNode.parent = node.column
+          nextNode = new TreeNode(depth + 1, c + 1)
           node.children :+= nextNode
 
           board.addPiece(c, Constant.YELLOW)
           val curBoardScore: Int = board.getHeuristicScore(c, Constant.YELLOW)
           val nextBoardScore: Int = maximizer(board, depth + 1, curBoardScore, bestScore, nextNode)
           val totalScore: Int = curBoardScore + nextBoardScore
-          nextNode.score = totalScore
+          nextNode.setScores(totalScore, curBoardScore, nextBoardScore)
 
           board.removePiece(c) // BackTracking
           bestScore = Math.min(bestScore, totalScore)
@@ -49,7 +45,6 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         }
       }
     }
-    // println(node + " ------ min")
     bestScore
   }
 
@@ -64,24 +59,18 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         if (board.isValidRow(c)) {
 
           // Tree representation info
-          nextNode = new TreeNode()
-          nextNode.depth = depth + 1
-          nextNode.column = c + 1
-          nextNode.row = board.nextValidRow(c) + 1
-          nextNode.parent = node.column
+          nextNode = new TreeNode(depth + 1, c + 1)
           node.children :+= nextNode
 
           board.addPiece(c, Constant.RED)
           val curBoardScore: Int = board.getHeuristicScore(c, Constant.RED)
           val nextBoardScore: Int = minimizer(board, depth + 1, curBoardScore, bestScore, nextNode)
           val totalScore: Int = curBoardScore + nextBoardScore
-          nextNode.score = totalScore
+          nextNode.setScores(totalScore, curBoardScore, nextBoardScore)
 
           board.removePiece(c) // BackTracking
           if (depth == 0 && totalScore > bestScore)
             bestCol = c
-
-          // if (depth == 0) println("score: " + totalScore)
 
           bestScore = Math.max(bestScore, totalScore)
           if (alphaBeta && bestScore + lastBoardScore >= lastBoardBestScore)
@@ -89,8 +78,6 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         }
       }
     }
-    // println(node + " ------ max")
-    // if (depth == 0) print_array(node)
     bestScore
   }
 }

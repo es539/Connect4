@@ -15,20 +15,6 @@ import scala.collection.mutable
 object Visualize {
   @throws[IOException]
   def visualize(tree: TreeNode): Unit = {
-    //val dummyTree = new TreeNode(1, 0, 1)
-    //dummyTree.children :+= new TreeNode(1, 1, 1)
-    //val two = new TreeNode(2, 1, 2)
-    //val three = new TreeNode(3, 1, 3)
-    //dummyTree.children :+= two
-    //dummyTree.children :+= three
-    //dummyTree.children :+= new TreeNode(4, 1, 4)
-    //two.children :+= new TreeNode(5, 2, 1)
-    //two.children :+= new TreeNode(7, 2, 2)
-    //two.children :+= new TreeNode(9, 2, 3)
-    //three.children :+= new TreeNode(10, 2, 1)
-    //three.children :+= new TreeNode(11, 2, 2)
-    //three.children :+= new TreeNode(12, 2, 3)
-
     val name: String = "tree_" + uuid
     val output: String = "output/" + name + ".png"
 
@@ -37,10 +23,8 @@ object Visualize {
       .nodeAttrs.add(Color.WHITE, Shape.TRIANGLE, Color.WHITE.font)
       .linkAttrs.add("class", "link-class")
 
-    println("before!!")
     bfs(tree, g)
     Graphviz.fromGraph(g).height(2000).render(Format.PNG).toFile(new File(output))
-    println("after!!!")
 
     val image = new File(output)
     val desktop = Desktop.getDesktop
@@ -73,8 +57,6 @@ object Visualize {
       if (nodes.get(current.hash) == null)
         nodes.put(current.hash, mutNode("\u25CF " + current.column))
 
-      // nodes.put(current.hash, mutNode(current.score + ", " + current.depth +
-      //  ", (" + current.column + ", " + current.row + "), " + current.parent))
       val s = nodes.get(current.hash)
       s.add(shape)
 
@@ -83,8 +65,8 @@ object Visualize {
       for (child <- children) {
         var e: MutableNode = null
         if (nodes.get(child.hash) == null)
-          nodes.put(child.hash, mutNode(child.score + ", " + child.depth + ", (" +
-            child.column + ", " + child.row + "), " + child.parent))
+          nodes.put(child.hash, mutNode(s"(${child.score}, ${child.curScore}, ${child.nextScore}), " +
+            s"${child.column}, ${child.depth}, ${child.id}"))
         e = nodes.get(child.hash)
         e.add(shape)
 
