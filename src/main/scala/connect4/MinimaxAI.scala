@@ -12,15 +12,12 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
 
   def cpuMove(board: IBoard): AIMove = {
     tree = new TreeNode()
-    maximizer(board, 0, -INF, INF, tree)
+    maximizer(board, 0, 0, INF, tree)
+    tree.column = bestCol + 1
     new AIMove(bestCol, tree)
   }
 
   private def minimizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int, node: TreeNode): Int = {
-    if (board.endGame) {
-      val score = board.getBoardScore
-      return score(0) * -1000 + score(1) * 1000
-    }
     if (depth == maxDepth)
       return 0
 
@@ -29,9 +26,8 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
     breakable {
       for (c <- 0 until board.getCols) {
         if (board.isValidRow(c)) {
-          board.addPiece(c, Constant.YELLOW)
-          val curBoardScore: Int = board.getHeuristicScore(c, Constant.YELLOW)
 
+          // Tree representation info
           nextNode = new TreeNode()
           nextNode.depth = depth + 1
           nextNode.column = c + 1
@@ -39,26 +35,25 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
           nextNode.parent = node.column
           node.children :+= nextNode
 
+          board.addPiece(c, Constant.YELLOW)
+          val curBoardScore: Int = board.getHeuristicScore(c, Constant.YELLOW)
           val nextBoardScore: Int = maximizer(board, depth + 1, curBoardScore, bestScore, nextNode)
-          board.removePiece(c)
           val totalScore: Int = curBoardScore + nextBoardScore
+          nextNode.score = totalScore
 
+          board.removePiece(c) // BackTracking
           bestScore = Math.min(bestScore, totalScore)
-          node.score = totalScore
+
           if (alphaBeta && bestScore + lastBoardScore <= lastBoardBestScore)
             break
         }
       }
     }
-    println(node + "------min")
+    // println(node + " ------ min")
     bestScore
   }
 
   private def maximizer(board: IBoard, depth: Int, lastBoardScore: Int, lastBoardBestScore: Int, node: TreeNode): Int = {
-    if (board.endGame) {
-      val score = board.getBoardScore
-      return score(0) * -1000 + score(1) * 1000
-    }
     if (depth == maxDepth)
       return 0
 
@@ -67,9 +62,8 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
     breakable {
       for (c <- 0 until board.getCols) {
         if (board.isValidRow(c)) {
-          board.addPiece(c, Constant.RED)
-          val curBoardScore: Int = board.getHeuristicScore(c, Constant.RED)
 
+          // Tree representation info
           nextNode = new TreeNode()
           nextNode.depth = depth + 1
           nextNode.column = c + 1
@@ -77,21 +71,26 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
           nextNode.parent = node.column
           node.children :+= nextNode
 
+          board.addPiece(c, Constant.RED)
+          val curBoardScore: Int = board.getHeuristicScore(c, Constant.RED)
           val nextBoardScore: Int = minimizer(board, depth + 1, curBoardScore, bestScore, nextNode)
-          board.removePiece(c)
           val totalScore: Int = curBoardScore + nextBoardScore
+          nextNode.score = totalScore
 
+          board.removePiece(c) // BackTracking
           if (depth == 0 && totalScore > bestScore)
             bestCol = c
 
+          // if (depth == 0) println("score: " + totalScore)
+
           bestScore = Math.max(bestScore, totalScore)
-          node.score = totalScore
           if (alphaBeta && bestScore + lastBoardScore >= lastBoardBestScore)
             break
         }
       }
     }
-    println(node + "------max")
+    // println(node + " ------ max")
+    // if (depth == 0) print_array(node)
     bestScore
   }
 }

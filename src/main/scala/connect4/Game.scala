@@ -48,17 +48,17 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     if (!board.endGame && board.isValidMove(col)) {
       drawCircle(board.nextValidRow(col), col, Constant.YELLOW_COLOR)
       board.addPiece(col, Constant.YELLOW)
-      println("Board After Human Move: \n" + board)
+      // println("Board After Human Move: \n" + board)
       if (!board.endGame) {
         val time = System.currentTimeMillis()
         val move = ai.cpuMove(board)
         col = move.column
         tree = move.tree
         println("Time: " + (System.currentTimeMillis() - time) + "ms")
-        println("AI col: " + col)
         drawCircle(board.nextValidRow(col), col, Constant.RED_COLOR)
         board.addPiece(col, Constant.RED)
-        println("Board After AI Move: \n" + board)
+        // println("AI col: " + col)
+        // println("Board After AI Move: \n" + board)
       }
     }
 
@@ -81,7 +81,7 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     text.setFont(Font.font("Roboto", FontWeight.BOLD, 40))
     text.setTextFill(Color.rgb(200, 200, 200, 1))
 
-    text.setText(score(0).toString + " - " + score(1).toString)
+    text.setText(score(0).toString + "  -  " + score(1).toString)
 
     pane.setAlignment(Pos.TOP_CENTER)
     pane.getChildren.add(text)
@@ -90,5 +90,4 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
   def drawTree(): Unit = {
     Visualize.visualize(tree)
   }
-
 }
