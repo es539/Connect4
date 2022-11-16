@@ -32,6 +32,7 @@ object Visualize {
   }
 
   def bfs(tree: TreeNode, g: MutableGraph): Unit = {
+    var nodesExpanded: Int = 0
     val queue: mutable.Queue[TreeNode] = mutable.Queue()
     val nodes = new util.HashMap[String, MutableNode]
     queue.enqueue(tree)
@@ -42,6 +43,7 @@ object Visualize {
 
     while (queue.nonEmpty) {
       val current: TreeNode = queue.dequeue()
+      nodesExpanded += 1
 
       if (current.depth % 2 == 0) {
         c1 = Color.WHITE
