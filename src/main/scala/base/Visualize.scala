@@ -24,7 +24,7 @@ object Visualize {
       .linkAttrs.add("class", "link-class")
 
     bfs(tree, g)
-    Graphviz.fromGraph(g).height(2000).render(Format.PNG).toFile(new File(output))
+    Graphviz.fromGraph(g).height(200).render(Format.PNG).toFile(new File(output))
 
     val image = new File(output)
     val desktop = Desktop.getDesktop
