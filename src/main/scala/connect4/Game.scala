@@ -14,7 +14,6 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
   var board: IBoard = _
   var ai: MinimaxAI = _
   var gridPane: GridPane = _
-  var gameEnd: Boolean = false
   var tree: TreeNode = _
   var text = new Label()
 
@@ -24,6 +23,7 @@ class Game(pane: StackPane, depth: Int, alphaBeta: Boolean) {
     board = new Board(6, 7)
     ai = new MinimaxAI(depth, alphaBeta)
     gridPane = new GridPane()
+    if (depth >= 6) Constant.TREE_REPRESENTATION = false
 
     text.setTextFill(Color.rgb(200, 200, 200, 1))
     text.setFont(Font.font("Roboto", FontWeight.BOLD, 40))

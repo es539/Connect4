@@ -11,4 +11,5 @@ object Constant {
   final val RED_COLOR: Color = Color.rgb(255, 0, 0)
   final val YELLOW_COLOR: Color = Color.rgb(255, 255, 0)
   final val EMPTY_COLOR: Color = Color.rgb(49, 46, 43)
+  var TREE_REPRESENTATION: Boolean = true
 }

@@ -41,7 +41,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         if (board.isValidRow(c)) {
 
           // Tree representation info
-          if (maxDepth <= 8) {
+          if (Constant.TREE_REPRESENTATION) {
             nextNode = new TreeNode(depth + 1, c + 1)
             node.children :+= nextNode
           }
@@ -51,7 +51,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
           val nextBoardScore: Int = maximizer(board, depth + 1, curBoardScore, bestScore, nextNode)
           val totalScore: Int = curBoardScore + nextBoardScore
 
-          if (maxDepth <= 8)
+          if (Constant.TREE_REPRESENTATION)
             nextNode.setScores(totalScore, curBoardScore, nextBoardScore)
 
           board.removePiece(c) // BackTracking
@@ -70,7 +70,6 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
     if (depth == maxDepth)
       return 0
 
-
     var bestScore: Int = -INF
     var nextNode: TreeNode = null
     breakable {
@@ -78,7 +77,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
         if (board.isValidRow(c)) {
 
           // Tree representation info
-          if (maxDepth <= 8) {
+          if (Constant.TREE_REPRESENTATION) {
             nextNode = new TreeNode(depth + 1, c + 1)
             node.children :+= nextNode
           }
@@ -88,7 +87,7 @@ class MinimaxAI(maxDepth: Int, alphaBeta: Boolean) {
           val nextBoardScore: Int = minimizer(board, depth + 1, curBoardScore, bestScore, nextNode)
           val totalScore: Int = curBoardScore + nextBoardScore
 
-          if (maxDepth <= 8)
+          if (Constant.TREE_REPRESENTATION)
             nextNode.setScores(totalScore, curBoardScore, nextBoardScore)
 
           board.removePiece(c) // BackTracking
