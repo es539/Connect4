@@ -123,46 +123,38 @@ class Board(rows: Int, cols: Int) extends IBoard {
 
   def calcScore(turn: Char): Int = {
     var score: Int = 0
-    val usedTiles: Array[Array[Boolean]] = Array.ofDim[Boolean](rows, cols)
 
     var dx: Array[Int] = Array(0, 1, 2, 3)
     var dy: Array[Int] = Array(0, 0, 0, 0)
-    score += calcGroup(0, 0, rows - 3, cols, dx, dy, turn, usedTiles)
+    score += calcGroup(0, 0, rows - 3, cols, dx, dy, turn)
 
     dx = Array(0, 0, 0, 0)
     dy = Array(0, 1, 2, 3)
-    score += calcGroup(0, 0, rows, cols - 3, dx, dy, turn, usedTiles)
+    score += calcGroup(0, 0, rows, cols - 3, dx, dy, turn)
 
     dx = Array(0, 1, 2, 3)
     dy = Array(0, 1, 2, 3)
-    score += calcGroup(0, 0, rows - 3, cols - 3, dx, dy, turn, usedTiles)
+    score += calcGroup(0, 0, rows - 3, cols - 3, dx, dy, turn)
 
     dx = Array(0, 1, 2, 3)
     dy = Array(0, -1, -2, -3)
-    score += calcGroup(0, 3, rows - 3, cols, dx, dy, turn, usedTiles)
+    score += calcGroup(0, 3, rows - 3, cols, dx, dy, turn)
 
     score
   }
 
-  def calcGroup(startRow: Int, startCol: Int, endRow: Int, endCol: Int, rowPolicy: Array[Int], colPolicy: Array[Int],
-                turn: Char, usedTiles: Array[Array[Boolean]]): Int = {
+  def calcGroup(startRow: Int, startCol: Int, endRow: Int, endCol: Int, rowPolicy: Array[Int], colPolicy: Array[Int], turn: Char): Int = {
     var score: Int = 0
     for (row <- startRow until endRow)
       for (col <- startCol until endCol) {
         if (board(row)(col) == turn) {
           var equal: Int = 0
-          var used: Int = 0
           for (i <- 0 until 4) {
             val newRow: Int = row + rowPolicy(i)
             val newCol: Int = col + colPolicy(i)
             equal += (if (board(newRow)(newCol) == turn) 1 else 0)
-            used += (if (usedTiles(newRow)(newCol)) 1 else 0)
           }
-          if (equal == 4 && used < 4) {
-            score += 1
-            for (i <- 0 until 4)
-              usedTiles(row + rowPolicy(i))(col + colPolicy(i)) = true
-          }
+          score += (if (equal == 4) 1 else 0)
         }
       }
     score
